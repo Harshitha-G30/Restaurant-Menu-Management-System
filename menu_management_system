@@ -1,0 +1,257 @@
+#include <stdio.h> 
+#include<stdlib.h> 
+#include<string.h> 
+typedef struct node 
+{ 
+char starter[20]; 
+char main[20]; 
+char beverage[20]; 
+float price; 
+float p2; 
+float p1; 
+struct node *next; 
+}NODE; 
+NODE * add_items(NODE *first) 
+{ 
+char starter,main,beverage; 
+NODE *newnode,*temp; 
+newnode=(NODE*)malloc(sizeof(NODE)); 
+newnode->next=NULL; 
+char items[20]; 
+printf("\nWhat do you want to add:(starter, main, beverage)\n"); 
+scanf("%s",items); 
+if(strcmp("starter",items)==0) 
+{ 
+ printf("Name: ");scanf("%s",newnode->starter); 
+ printf("Price: ");scanf("%f",&newnode->price); 
+ 
+ if(first==NULL) 
+ first=newnode; 
+ else 
+ { 
+ temp=first; 
+ while(temp->next!=NULL) 
+ temp=temp->next; 
+ temp->next=newnode; 
+ } 
+ printf("\nstarter %s is added at the end of the list",newnode->starter); 
+}
+else if(strcmp("main",items)==0) 
+{ 
+ printf("Name: ");scanf("%s",newnode->main); 
+ printf("Price: ");scanf("%f",&newnode->p1); 
+ 
+ if(first==NULL) 
+ first=newnode; 
+ else 
+ { 
+ temp=first; 
+ while(temp->next!=NULL) 
+ temp=temp->next; 
+ temp->next=newnode; 
+ } 
+ printf("\nmain_dish %s is added at the end of the list",newnode->main); 
+} 
+else if(strcmp("beverage",items)==0) 
+{ 
+ printf("Name: ");scanf("%s",newnode->beverage); 
+ printf("Price: ");scanf("%f",&newnode->p2); 
+ 
+ if(first==NULL) 
+ first=newnode; 
+ else 
+ { 
+ temp=first; 
+ while(temp->next!=NULL) 
+ temp=temp->next; 
+ temp->next=newnode; 
+ } 
+ printf("\nbeverage %s is added at the end of the list",newnode->beverage); 
+} 
+ else 
+ { 
+ printf("Invalid error\n"); 
+ } 
+return first; 
+} 
+ 
+void display(NODE *first) 
+{ 
+if(first == NULL) 
+ { 
+ printf("\nEmpty list"); 
+ return; 
+ } 
+ 
+ char items[20]; 
+ printf("\nWhat do you want to display: (starter, main, beverage)\n"); 
+ scanf("%s", items); 
+ 
+ printf("--------------------------------"); 
+ printf("\n%s Details\n", items); 
+ printf("--------------------------------\n"); 
+ 
+ while(first != NULL) 
+ { 
+ if(strcmp(items, "starter") == 0 && strlen(first->starter) > 0) { 
+ printf("%s\t%f\n", first->starter, first->price); 
+ } 
+ else if(strcmp(items, "main") == 0 && strlen(first->main) > 0) { 
+ printf("%s\t%f\n", first->main, first->p1); 
+ } 
+ else if(strcmp(items, "beverage") == 0 && strlen(first->beverage) > 0) { 
+ printf("%s\t%f\n", first->beverage, first->p2); 
+ } 
+ 
+ first = first->next; 
+ } 
+ printf("--------------------------------\n"); 
+} 
+ 
+NODE *search_items(NODE *first) 
+{ 
+ NODE *temp; 
+ char items[20]; 
+ char food[20]; 
+ char starter,main,beverage; 
+ 
+ if(first==NULL) 
+ printf("\nEmpty list"); 
+ else
+ { 
+ printf("\nEnter the item name to search:[starter, menu, beverage]"); 
+ scanf("%s",items); 
+ 
+ if(strcmp("starter",items)==0) 
+ { 
+ printf("\n enter the starter\n"); 
+ scanf("%s",food); 
+ temp=first; 
+ while(temp!=NULL && strcmp(temp->starter,food)!=0) 
+ temp=temp->next; 
+ 
+ if(temp==NULL) 
+ printf("\n%s not existing in the list",food); 
+ else 
+ { 
+ printf("\n %s is existing in the list",food); 
+ printf("\nCurrent price: %f",temp->price); 
+ 
+ printf("\nEnter new price: "); 
+ scanf("%f",&temp->price); 
+ 
+ printf("\nprice of item %s is updated successfully ", food); 
+ } 
+ } 
+ 
+ else if(strcmp("main",items)==0) 
+ { 
+ printf("\n enter the main_dish\n"); 
+ scanf("%s",food); 
+ temp=first; 
+ while(temp!=NULL && strcmp(temp->main,food)!=0) 
+ temp=temp->next; 
+ 
+ if(temp==NULL) 
+ printf("\n%s not existing in the list",food); 
+ else 
+ { 
+ printf("\n %s is existing in the list",food); 
+ printf("\nCurrent price: %f",temp->p1); 
+ 
+ printf("\nEnter new price: ");
+ scanf("%f",&temp->p1); 
+ 
+ printf("\nprice of item %s is updated successfully ", food); 
+ } 
+ } 
+ 
+ else if(strcmp("beverage",items)==0) 
+ { 
+ printf("\n enter the beverage\n"); 
+ scanf("%s",food); 
+ temp=first; 
+ while(temp!=NULL && strcmp(temp->beverage,food)!=0) 
+ temp=temp->next; 
+ 
+ if(temp==NULL) 
+ printf("\n%s not existing in the list",food); 
+ else 
+ { 
+ printf("\n %s is existing in the list",food); 
+ printf("\nCurrent price: %f",temp->p2); 
+ 
+ printf("\nEnter new price: "); 
+ scanf("%f",&temp->p2); 
+ 
+ printf("\nprice of item %s is updated successfully ", food); 
+ } 
+ } 
+ 
+ else 
+ { 
+ printf("\n\n Invalid error"); 
+ } 
+ 
+ } 
+ 
+ return first; 
+} 
+NODE* delete_item(NODE* first, char* item) { 
+ NODE *current = first; 
+ NODE *prev = NULL;
+ while (current != NULL) { 
+ 
+ if (strcmp(current->starter, item) == 0 || strcmp(current->main, item) == 0 || strcmp(current-
+>beverage, item) == 0) { 
+ 
+ if (prev == NULL) { 
+ first = current->next; 
+ } else { 
+ prev->next = current->next; 
+ } 
+ free(current); 
+ printf("\n%s deleted successfully", item); 
+ return first; 
+ } 
+ prev = current; 
+ current = current->next; 
+ } 
+ printf("\n%s not found in the list", item); 
+ return first; 
+} 
+int main() 
+{ 
+ NODE *first = NULL; 
+ int choice; 
+ while(1) 
+ { 
+ printf("\n1:ADD ITEMS\n2:SEARCH ITEMS\n3:DISPLAY MENU\n4:DELETE ITEM\n5:EXIT"); 
+ printf("\nEnter your choice: "); 
+ scanf("%d",&choice); 
+ switch(choice) 
+ { 
+ case 1: 
+ first = add_items(first); 
+ break; 
+ case 2: 
+ first = search_items(first); 
+ break; 
+case 3: 
+ display(first); 
+ break; 
+ case 4: { 
+ char item[20]; 
+ printf("\nEnter the item name to delete: "); 
+ scanf("%s", item); 
+ first = delete_item(first, item); 
+ break; 
+ } 
+ case 5: 
+ exit(0); 
+ default: 
+ printf("\nInvalid choice"); 
+ } 
+ } 
+ return 0; 
+}
